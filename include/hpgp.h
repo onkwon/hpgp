@@ -93,6 +93,8 @@ size_t hpgp_pack_confirm(hpgp_mmtype_t type, const void *cnf,
 		void *buf, size_t bufsize);
 size_t hpgp_pack_indication(hpgp_mmtype_t type, const void *ind,
 		void *buf, size_t bufsize);
+size_t hpgp_pack_response(hpgp_mmtype_t type, const void *rsp,
+		void *buf, size_t bufsize);
 
 hpgp_mmtype_t hpgp_mmtype(const struct hpgp_frame *frame);
 hpgp_mmtype_variant_t hpgp_mmtype_variant(const struct hpgp_frame *frame);

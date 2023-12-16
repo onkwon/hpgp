@@ -141,6 +141,13 @@ static size_t pack_slac_parm_req(struct hpgp_mme *mme,
 	return copy(mme->data, data, len);
 }
 
+static size_t pack_slac_match_req(struct hpgp_mme *mme,
+		const void *data, size_t maxlen)
+{
+	const size_t len = MIN(sizeof(struct hpgp_mme_slac_match_req), maxlen);
+	return copy(mme->data, data, len);
+}
+
 static size_t pack_slac_parm_cnf(struct hpgp_mme *mme,
 		const void *data, size_t maxlen)
 {
@@ -155,6 +162,20 @@ static size_t pack_slac_match_cnf(struct hpgp_mme *mme,
 	return copy(mme->data, data, len);
 }
 
+static size_t pack_start_atten_char_ind(struct hpgp_mme *mme,
+		const void *data, size_t maxlen)
+{
+	const size_t len = MIN(sizeof(struct hpgp_mme_start_atten_char_ind), maxlen);
+	return copy(mme->data, data, len);
+}
+
+static size_t pack_mnbc_sound_ind(struct hpgp_mme *mme,
+		const void *data, size_t maxlen)
+{
+	const size_t len = MIN(sizeof(struct hpgp_mme_mnbc_sound_ind), maxlen);
+	return copy(mme->data, data, len);
+}
+
 static size_t pack_atten_char_ind(struct hpgp_mme *mme,
 		const void *data, size_t maxlen)
 {
@@ -162,64 +183,91 @@ static size_t pack_atten_char_ind(struct hpgp_mme *mme,
 	return copy(mme->data, data, len);
 }
 
+static size_t pack_atten_char_rsp(struct hpgp_mme *mme,
+		const void *data, size_t maxlen)
+{
+	const size_t len = MIN(sizeof(struct hpgp_mme_atten_char_rsp), maxlen);
+	return copy(mme->data, data, len);
+}
+
 static func_table_t req_func_table[] = {
-	pack_nothing,		/*HPGP_MMTYPE_DISCOVER_LIST*/
-	pack_nothing,		/*HPGP_MMTYPE_ENCRYPTED*/
-	pack_setkey_req,	/*HPGP_MMTYPE_SET_KEY*/
-	pack_nothing,		/*HPGP_MMTYPE_GET_KEY*/
-	pack_nothing,		/*HPGP_MMTYPE_BRG_INFO*/
-	pack_nothing,		/*HPGP_MMTYPE_NW_INFO*/
-	pack_nothing,		/*HPGP_MMTYPE_HFID*/
-	pack_nothing,		/*HPGP_MMTYPE_NW_STATS*/
-	pack_slac_parm_req,	/*HPGP_MMTYPE_SLAC_PARM*/
-	pack_nothing,		/*HPGP_MMTYPE_START_ATTEN_CHAR*/
-	pack_nothing,		/*HPGP_MMTYPE_ATTEN_CHAR*/
-	pack_nothing,		/*HPGP_MMTYPE_PKCS_CERT*/
-	pack_nothing,		/*HPGP_MMTYPE_MNBC_SOUND*/
-	pack_nothing,		/*HPGP_MMTYPE_VALIDATE*/
-	pack_nothing,		/*HPGP_MMTYPE_SLAC_MATCH*/
-	pack_nothing,		/*HPGP_MMTYPE_SLAC_USER_DATA*/
-	pack_nothing,		/*HPGP_MMTYPE_ATTEN_PROFILE*/
+	pack_nothing,			/*HPGP_MMTYPE_DISCOVER_LIST*/
+	pack_nothing,			/*HPGP_MMTYPE_ENCRYPTED*/
+	pack_setkey_req,		/*HPGP_MMTYPE_SET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_GET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_BRG_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_HFID*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_STATS*/
+	pack_slac_parm_req,		/*HPGP_MMTYPE_SLAC_PARM*/
+	pack_nothing,			/*HPGP_MMTYPE_START_ATTEN_CHAR*/
+	pack_nothing,			/*HPGP_MMTYPE_ATTEN_CHAR*/
+	pack_nothing,			/*HPGP_MMTYPE_PKCS_CERT*/
+	pack_nothing,			/*HPGP_MMTYPE_MNBC_SOUND*/
+	pack_nothing,			/*HPGP_MMTYPE_VALIDATE*/
+	pack_slac_match_req,		/*HPGP_MMTYPE_SLAC_MATCH*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_USER_DATA*/
+	pack_nothing,			/*HPGP_MMTYPE_ATTEN_PROFILE*/
 };
 
 static func_table_t cnf_func_table[] = {
-	pack_nothing,		/*HPGP_MMTYPE_DISCOVER_LIST*/
-	pack_nothing,		/*HPGP_MMTYPE_ENCRYPTED*/
-	pack_nothing,		/*HPGP_MMTYPE_SET_KEY*/
-	pack_nothing,		/*HPGP_MMTYPE_GET_KEY*/
-	pack_nothing,		/*HPGP_MMTYPE_BRG_INFO*/
-	pack_nothing,		/*HPGP_MMTYPE_NW_INFO*/
-	pack_nothing,		/*HPGP_MMTYPE_HFID*/
-	pack_nothing,		/*HPGP_MMTYPE_NW_STATS*/
-	pack_slac_parm_cnf,	/*HPGP_MMTYPE_SLAC_PARM*/
-	pack_nothing,		/*HPGP_MMTYPE_START_ATTEN_CHAR*/
-	pack_nothing,		/*HPGP_MMTYPE_ATTEN_CHAR*/
-	pack_nothing,		/*HPGP_MMTYPE_PKCS_CERT*/
-	pack_nothing,		/*HPGP_MMTYPE_MNBC_SOUND*/
-	pack_nothing,		/*HPGP_MMTYPE_VALIDATE*/
-	pack_slac_match_cnf,	/*HPGP_MMTYPE_SLAC_MATCH*/
-	pack_nothing,		/*HPGP_MMTYPE_SLAC_USER_DATA*/
-	pack_nothing,		/*HPGP_MMTYPE_ATTEN_PROFILE*/
+	pack_nothing,			/*HPGP_MMTYPE_DISCOVER_LIST*/
+	pack_nothing,			/*HPGP_MMTYPE_ENCRYPTED*/
+	pack_nothing,			/*HPGP_MMTYPE_SET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_GET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_BRG_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_HFID*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_STATS*/
+	pack_slac_parm_cnf,		/*HPGP_MMTYPE_SLAC_PARM*/
+	pack_nothing,			/*HPGP_MMTYPE_START_ATTEN_CHAR*/
+	pack_nothing,			/*HPGP_MMTYPE_ATTEN_CHAR*/
+	pack_nothing,			/*HPGP_MMTYPE_PKCS_CERT*/
+	pack_nothing,			/*HPGP_MMTYPE_MNBC_SOUND*/
+	pack_nothing,			/*HPGP_MMTYPE_VALIDATE*/
+	pack_slac_match_cnf,		/*HPGP_MMTYPE_SLAC_MATCH*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_USER_DATA*/
+	pack_nothing,			/*HPGP_MMTYPE_ATTEN_PROFILE*/
 };
 
 static func_table_t ind_func_table[] = {
-	pack_nothing,		/*HPGP_MMTYPE_DISCOVER_LIST*/
-	pack_nothing,		/*HPGP_MMTYPE_ENCRYPTED*/
-	pack_nothing,		/*HPGP_MMTYPE_SET_KEY*/
-	pack_nothing,		/*HPGP_MMTYPE_GET_KEY*/
-	pack_nothing,		/*HPGP_MMTYPE_BRG_INFO*/
-	pack_nothing,		/*HPGP_MMTYPE_NW_INFO*/
-	pack_nothing,		/*HPGP_MMTYPE_HFID*/
-	pack_nothing,		/*HPGP_MMTYPE_NW_STATS*/
-	pack_nothing,		/*HPGP_MMTYPE_SLAC_PARM*/
-	pack_nothing,		/*HPGP_MMTYPE_START_ATTEN_CHAR*/
-	pack_atten_char_ind,	/*HPGP_MMTYPE_ATTEN_CHAR*/
-	pack_nothing,		/*HPGP_MMTYPE_PKCS_CERT*/
-	pack_nothing,		/*HPGP_MMTYPE_MNBC_SOUND*/
-	pack_nothing,		/*HPGP_MMTYPE_VALIDATE*/
-	pack_nothing,		/*HPGP_MMTYPE_SLAC_MATCH*/
-	pack_nothing,		/*HPGP_MMTYPE_SLAC_USER_DATA*/
-	pack_nothing,		/*HPGP_MMTYPE_ATTEN_PROFILE*/
+	pack_nothing,			/*HPGP_MMTYPE_DISCOVER_LIST*/
+	pack_nothing,			/*HPGP_MMTYPE_ENCRYPTED*/
+	pack_nothing,			/*HPGP_MMTYPE_SET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_GET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_BRG_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_HFID*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_STATS*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_PARM*/
+	pack_start_atten_char_ind,	/*HPGP_MMTYPE_START_ATTEN_CHAR*/
+	pack_atten_char_ind,		/*HPGP_MMTYPE_ATTEN_CHAR*/
+	pack_nothing,			/*HPGP_MMTYPE_PKCS_CERT*/
+	pack_mnbc_sound_ind,		/*HPGP_MMTYPE_MNBC_SOUND*/
+	pack_nothing,			/*HPGP_MMTYPE_VALIDATE*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_MATCH*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_USER_DATA*/
+	pack_nothing,			/*HPGP_MMTYPE_ATTEN_PROFILE*/
+};
+
+static func_table_t rsp_func_table[] = {
+	pack_nothing,			/*HPGP_MMTYPE_DISCOVER_LIST*/
+	pack_nothing,			/*HPGP_MMTYPE_ENCRYPTED*/
+	pack_nothing,			/*HPGP_MMTYPE_SET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_GET_KEY*/
+	pack_nothing,			/*HPGP_MMTYPE_BRG_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_INFO*/
+	pack_nothing,			/*HPGP_MMTYPE_HFID*/
+	pack_nothing,			/*HPGP_MMTYPE_NW_STATS*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_PARM*/
+	pack_nothing,			/*HPGP_MMTYPE_START_ATTEN_CHAR*/
+	pack_atten_char_rsp,		/*HPGP_MMTYPE_ATTEN_CHAR*/
+	pack_nothing,			/*HPGP_MMTYPE_PKCS_CERT*/
+	pack_nothing,			/*HPGP_MMTYPE_MNBC_SOUND*/
+	pack_nothing,			/*HPGP_MMTYPE_VALIDATE*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_MATCH*/
+	pack_nothing,			/*HPGP_MMTYPE_SLAC_USER_DATA*/
+	pack_nothing,			/*HPGP_MMTYPE_ATTEN_PROFILE*/
 };
 
 #pragma GCC diagnostic push
@@ -266,6 +314,12 @@ size_t hpgp_pack_indication(hpgp_mmtype_t type, const void *ind,
 		void *buf, size_t bufsize)
 {
 	return pack(type, HPGP_MMTYPE_IND, ind, buf, bufsize, ind_func_table);
+}
+
+size_t hpgp_pack_response(hpgp_mmtype_t type, const void *rsp,
+		void *buf, size_t bufsize)
+{
+	return pack(type, HPGP_MMTYPE_RSP, rsp, buf, bufsize, rsp_func_table);
 }
 
 hpgp_mmtype_t hpgp_mmtype(const struct hpgp_frame *frame)
