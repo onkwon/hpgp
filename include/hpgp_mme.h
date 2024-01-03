@@ -43,6 +43,30 @@ struct hpgp_mme_setkey_cnf {
 	uint8_t cco;
 } __attribute__((packed));
 
+struct hpgp_mme_getkey_req {
+	uint8_t req_type;
+	uint8_t key_type;
+	uint8_t nid[7];
+	uint32_t my_nonce;
+	uint8_t pid;
+	uint16_t prn;
+	uint8_t pmn;
+	uint8_t key[16];
+} __attribute__((packed));
+
+struct hpgp_mme_getkey_cnf {
+	uint8_t result;
+	uint8_t key_type;
+	uint32_t my_nonce;
+	uint32_t your_nonce;
+	uint8_t nid[7];
+	uint8_t eks;
+	uint8_t pid;
+	uint16_t prn;
+	uint8_t pmn;
+	uint8_t key[16];
+} __attribute__((packed));
+
 struct hpgp_mme_slac_parm_req {
 	uint8_t app_type;
 	uint8_t sec_type;

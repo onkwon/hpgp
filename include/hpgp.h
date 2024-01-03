@@ -70,6 +70,7 @@ struct hpgp_frame {
 struct hpgp_mme_req {
 	union {
 		struct hpgp_mme_setkey_req setkey;
+		struct hpgp_mme_getkey_req getkey;
 		struct hpgp_mme_slac_parm_req slac_parm;
 	} msg;
 };
@@ -78,6 +79,7 @@ struct hpgp_mme_cnf {
 	union {
 		struct hpgp_mme_slac_parm_cnf slac_parm;
 		struct hpgp_mme_slac_match_cnf slac_match;
+		struct hpgp_mme_getkey_cnf getkey;
 	} msg;
 };
 
