@@ -134,6 +134,13 @@ static size_t pack_setkey_req(struct hpgp_mme *mme,
 	return copy(mme->data, data, len);
 }
 
+static size_t pack_getkey_req(struct hpgp_mme *mme,
+		const void *data, size_t maxlen)
+{
+	const size_t len = MIN(sizeof(struct hpgp_mme_getkey_req), maxlen);
+	return copy(mme->data, data, len);
+}
+
 static size_t pack_slac_parm_req(struct hpgp_mme *mme,
 		const void *data, size_t maxlen)
 {
@@ -145,6 +152,13 @@ static size_t pack_slac_match_req(struct hpgp_mme *mme,
 		const void *data, size_t maxlen)
 {
 	const size_t len = MIN(sizeof(struct hpgp_mme_slac_match_req), maxlen);
+	return copy(mme->data, data, len);
+}
+
+static size_t pack_getkey_cnf(struct hpgp_mme *mme,
+		const void *data, size_t maxlen)
+{
+	const size_t len = MIN(sizeof(struct hpgp_mme_getkey_cnf), maxlen);
 	return copy(mme->data, data, len);
 }
 
@@ -194,7 +208,7 @@ static func_table_t req_func_table[] = {
 	pack_nothing,			/*HPGP_MMTYPE_DISCOVER_LIST*/
 	pack_nothing,			/*HPGP_MMTYPE_ENCRYPTED*/
 	pack_setkey_req,		/*HPGP_MMTYPE_SET_KEY*/
-	pack_nothing,			/*HPGP_MMTYPE_GET_KEY*/
+	pack_getkey_req,		/*HPGP_MMTYPE_GET_KEY*/
 	pack_nothing,			/*HPGP_MMTYPE_BRG_INFO*/
 	pack_nothing,			/*HPGP_MMTYPE_NW_INFO*/
 	pack_nothing,			/*HPGP_MMTYPE_HFID*/
@@ -214,7 +228,7 @@ static func_table_t cnf_func_table[] = {
 	pack_nothing,			/*HPGP_MMTYPE_DISCOVER_LIST*/
 	pack_nothing,			/*HPGP_MMTYPE_ENCRYPTED*/
 	pack_nothing,			/*HPGP_MMTYPE_SET_KEY*/
-	pack_nothing,			/*HPGP_MMTYPE_GET_KEY*/
+	pack_getkey_cnf,		/*HPGP_MMTYPE_GET_KEY*/
 	pack_nothing,			/*HPGP_MMTYPE_BRG_INFO*/
 	pack_nothing,			/*HPGP_MMTYPE_NW_INFO*/
 	pack_nothing,			/*HPGP_MMTYPE_HFID*/
